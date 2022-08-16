@@ -1,11 +1,9 @@
 FROM python:3.8
 
-RUN pip install mlflow==1.14.1 google-cloud-storage
+RUN pip install mlflow==1.14.1 xgboost
 
-RUN pip install xgboost
+COPY model.py /models/model.py
 
-COPY scripts/serving_entrypoint.sh /serving_entrypoint.sh
-
-ENTRYPOINT [ "/bin/bash", "/serving_entrypoint.sh" ]
+ENTRYPOINT [ "/bin/bash", "mlflow models serve --model-uri /models/model.py -h 0.0.0.0 -p 80 --no-conda" ]
 
 
